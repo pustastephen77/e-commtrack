@@ -1,0 +1,9 @@
+{
+  "name": "itmsd4-final",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "start:app": "pnpm --filter app start",
+    "start:backend": "pnpm --filter backend dev"
+  }
+}

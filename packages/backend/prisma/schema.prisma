@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String  @id @default(cuid())
+  email String  @unique
+  name  String?
+  wishlists WishlistItem[]
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id    String @id @default(cuid())
+  title String
+  description String?
+  price Int // cents
+  currency String @default("PHP")
+  sku String?
+  snapshots PriceSnapshot[]
+  createdAt DateTime @default(now())
+}
+
+model WishlistItem {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  addedAt DateTime @default(now())
+  @@unique([userId, productId])
+}
+
+model PriceSnapshot {
+  id String @id @default(cuid())
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  timestamp DateTime @default(now())
+  price Int
+}
